@@ -81,6 +81,7 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
       timer.cancel_all();
 
       // Clear the current dashboard to prevent reloading
+      if ($location.path() === '/connectionFailed') { return; }
       self.current = {};
       self.indices = [];
       esVersion.isMinimum().then(function(isMinimum) {

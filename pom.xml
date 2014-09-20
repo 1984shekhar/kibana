@@ -15,7 +15,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -36,10 +37,12 @@
     <servlet-api-version>2.5</servlet-api-version>
     <slf4j-api-version>1.7.5</slf4j-api-version>
     <maven-resources-plugin-version>2.6</maven-resources-plugin-version>
+    <maven-antrun-plugin-version>1.7</maven-antrun-plugin-version>
 
     <plugin-context>/hawtio-kibana</plugin-context>
     <plugin-name>${project.artifactId}</plugin-name>
-    <plugin-domain />
+    <plugin-scripts>/vendor/require/require.js,/app/hawtioPlugin.js</plugin-scripts>
+    <plugin-domain/>
 
   </properties>
 
@@ -57,6 +60,35 @@
     <url>http://github.com/hawtio/kibana</url>
   </scm>
 
+  <dependencies>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>${servlet-api-version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j-api-version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.hawt</groupId>
+      <artifactId>hawtio-util</artifactId>
+      <version>${hawtio-version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.hawt</groupId>
+      <artifactId>hawtio-plugin-mbean</artifactId>
+      <version>${hawtio-version}</version>
+    </dependency>
+
+  </dependencies>
+
   <distributionManagement>
     <repository>
       <id>oss-sonatype-staging</id>
@@ -72,7 +104,61 @@
 
   <build>
 
+    <resources>
+      <resource>
+        <directory>src/main/webapp</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>WEB-INF/web.xml</include>
+        </includes>
+      </resource>
+    </resources>
+
     <plugins>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${maven-resources-plugin-version}</version>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>resources</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>0.0.16</version>
+        <executions>
+          <execution>
+            <id>install node and npm</id>
+            <goals>
+              <goal>install-node-and-npm</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <nodeVersion>v0.10.32</nodeVersion>
+              <npmVersion>1.4.12</npmVersion>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm install</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>grunt build</id>
+            <goals>
+              <goal>grunt</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
 
       <plugin>
         <groupId>org.apache.felix</groupId>
@@ -96,8 +182,13 @@
             <Web-ContextPath>${plugin-context}</Web-ContextPath>
             <Bundle-Name>${project.description}</Bundle-Name>
             <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+            <Bundle-ClassPath>.,WEB-INF/classes</Bundle-ClassPath>
             <Implementation-Title>Hawtio Kibana UI</Implementation-Title>
             <Implementation-Version>${project.version}</Implementation-Version>
+
+            <Embed-Directory>WEB-INF/lib</Embed-Directory>
+            <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+            <Embed-Transitive>true</Embed-Transitive>
           </instructions>
         </configuration>
       </plugin>
@@ -110,8 +201,8 @@
           <archive>
             <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
           </archive>
-          <warSourceDirectory>${basedir}/src</warSourceDirectory>
-          <webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
+          <warSourceDirectory>${basedir}/dist</warSourceDirectory>
+          <webXml>${project.build.outputDirectory}/WEB-INF/web.xml</webXml>
         </configuration>
       </plugin>
 
@@ -131,12 +222,12 @@
             </connector>
           </connectors>
           <systemProperties>
-<!--
-            <systemProperty>
-              <key>hawtio.authenticationEnabled</key>
-              <value>false</value>
-            </systemProperty>
--->
+            <!--
+                        <systemProperty>
+                          <key>hawtio.authenticationEnabled</key>
+                          <value>false</value>
+                        </systemProperty>
+            -->
           </systemProperties>
         </configuration>
       </plugin>

@@ -125,7 +125,7 @@ function (angular, $, _, appLevelRequire) {
     'filters/all'
   ], function () {
 
-    // bootstrap the app
+    /*// bootstrap the app
     angular
       .element(document)
       .ready(function() {
@@ -151,7 +151,7 @@ function (angular, $, _, appLevelRequire) {
               });
             };
           }]);
-      });
+      });*/
   });
 
   return app;

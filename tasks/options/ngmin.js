@@ -10,6 +10,7 @@ module.exports = function(config) {
         'app/filters/**/*.js',
         'app/panels/**/*.js',
         'app/app.js',
+        'app/hawtioPlugin.js',
         'vendor/angular/**/*.js',
         'vendor/elasticjs/elastic-angular-client.js'
       ],

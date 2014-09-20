@@ -11,8 +11,7 @@ module.exports = function(grunt) {
     'ngmin:build',
     'requirejs:build',
     'clean:temp',
-    'build:write_revision',
-    'uglify:dest'
+    'build:write_revision'
   ]);
 
   // run a string replacement on the require config, using the latest revision number as the cache buster
@@ -21,7 +20,8 @@ module.exports = function(grunt) {
       grunt.config('string-replace.config', {
         files: {
           '<%= destDir %>/app/components/require.config.js': '<%= destDir %>/app/components/require.config.js',
-          '<%= destDir %>/app/app.js': '<%= destDir %>/app/app.js'
+          '<%= destDir %>/app/app.js': '<%= destDir %>/app/app.js',
+          '<%= destDir %>/app/hawtioPlugin.js': '<%= destDir %>/app/hawtioPlugin.js'
         },
 
         options: {

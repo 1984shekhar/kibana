@@ -42,8 +42,6 @@ module.exports = function(config,grunt) {
         'css',
         'kbn',
         'text',
-        'jquery',
-        'angular',
         'settings',
         'bootstrap',
         'modernizr',
@@ -59,6 +57,10 @@ module.exports = function(config,grunt) {
         'jquery.flot.pie',
         'angular-sanitize',
         'angular-dragdrop'
+      ]
+    }, {
+      name: 'hawtioPlugin',
+      include: [
       ]
     }
   ];

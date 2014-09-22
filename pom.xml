@@ -41,7 +41,7 @@
 
     <plugin-context>/hawtio-kibana</plugin-context>
     <plugin-name>${project.artifactId}</plugin-name>
-    <plugin-scripts>/vendor/require/require.js,/app/app.js</plugin-scripts>
+    <plugin-scripts>/vendor/require/require.js,/app/components/hawtio-require.config.js,/app/hawtioPlugin.js</plugin-scripts>
     <plugin-domain/>
 
   </properties>

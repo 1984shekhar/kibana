@@ -108,9 +108,15 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
           self.elasticsearch_load('temp',_id);
           break;
         case ('file'):
+          if (!_id.match(/\.json$/)) {
+            _id += '.json';
+          }
           self.file_load(_id);
           break;
         case('script'):
+          if (!_id.match(/\.js$/)) {
+            _id += '.js';
+          }
           self.script_load(_id);
           break;
         case('local'):
@@ -120,7 +126,7 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
           $location.path(config.default_route);
         }
       // No dashboard in the URL
-      } else {
+      }/* else {
         // Check if browser supports localstorage, and if there's an old dashboard. If there is,
         // inform the user that they should save their dashboard to Elasticsearch and then set that
         // as their default
@@ -138,7 +144,7 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
         } else {
           $location.path(config.default_route);
         }
-      }
+      }*/
     };
 
     // Since the dashboard is responsible for index computation, we can compute and assign the indices

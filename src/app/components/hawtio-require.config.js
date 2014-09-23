@@ -5,7 +5,7 @@ require.config({
   baseUrl: '../hawtio-kibana/app',
   // urlArgs: 'r=@REV@',
   paths: {
-    config:                   '../config',
+    config:                   '../hawtio-config',
     settings:                 'components/settings',
     kbn:                      'components/kbn',
 

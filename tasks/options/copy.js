@@ -4,7 +4,7 @@ module.exports = function(config) {
     almost_everything_to_temp: {
       cwd: '<%= srcDir %>',
       expand: true,
-      src: ['**/*', '!**/*.less', '!test/**/*'],
+      src: ['**/*', '!**/*.less', '!test/**/*', '!main/**/*'],
       dest: '<%= tempDir %>'
     }
   };

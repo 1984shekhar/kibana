@@ -11,7 +11,8 @@ module.exports = function(grunt) {
     'ngmin:build',
     'requirejs:build',
     'clean:temp',
-    'build:write_revision'
+    'build:write_revision',
+    'replace:base_url'
   ]);
 
   // run a string replacement on the require config, using the latest revision number as the cache buster

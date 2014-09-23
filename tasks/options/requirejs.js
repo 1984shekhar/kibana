@@ -12,7 +12,7 @@ module.exports = function(config,grunt) {
         optimizeCss: 'none',
         optimizeAllPluginResources: false,
 
-        removeCombined: true,
+        removeCombined: false,
         findNestedDependencies: true,
         normalizeDirDefines: 'all',
         inlineText: true,
@@ -57,10 +57,6 @@ module.exports = function(config,grunt) {
         'jquery.flot.pie',
         'angular-sanitize',
         'angular-dragdrop'
-      ]
-    }, {
-      name: 'hawtioPlugin',
-      include: [
       ]
     }
   ];

@@ -15,11 +15,11 @@ define([
   'extend-jquery',
   'bindonce',
 ],
-function (angular, $, _) {
+function (angular, $, _, appLevelRequire) {
 
   "use strict";
 
-  var app = angular.module('kibana', []),
+  var app = angular.module('kibana', ['hawtioCore']),
     // we will keep a reference to each module defined before boot, so that we can
     // go back and allow it to define new features later. Once we boot, this will be false
     pre_boot_modules = [],
@@ -46,9 +46,9 @@ function (angular, $, _) {
   app.useModule = function (module) {
     if (pre_boot_modules) {
       pre_boot_modules.push(module);
-    } else {
+    }/* else {
       _.extend(module, register_fns);
-    }
+    }*/
     return module;
   };
 
@@ -71,7 +71,7 @@ function (angular, $, _) {
 
   app.config(function ($routeProvider, $controllerProvider, $compileProvider, $filterProvider, $provide) {
 
-    $routeProvider
+    /*$routeProvider
       .when('/dashboard', {
         templateUrl: 'app/partials/dashboard.html',
       })
@@ -83,7 +83,7 @@ function (angular, $, _) {
       })
       .otherwise({
         redirectTo: 'dashboard'
-      });
+      });*/
 
     // this is how the internet told me to dynamically add modules :/
     register_fns.controller = $controllerProvider.register;
@@ -125,33 +125,26 @@ function (angular, $, _) {
     'filters/all'
   ], function () {
 
-    /*// bootstrap the app
-    angular
-      .element(document)
-      .ready(function() {
-        $('html').attr('ng-controller', 'DashCtrl');
-        angular.bootstrap(document, apps_deps)
-          .invoke(['$rootScope', function ($rootScope) {
-            _.each(pre_boot_modules, function (module) {
-              _.extend(module, register_fns);
-            });
-            pre_boot_modules = false;
+    app.run(['$rootScope', function ($rootScope) {
+      _.each(pre_boot_modules, function (module) {
+        _.extend(module, register_fns);
+      });
+      pre_boot_modules = false;
 
-            $rootScope.requireContext = appLevelRequire;
-            $rootScope.require = function (deps, fn) {
-              var $scope = this;
-              $scope.requireContext(deps, function () {
-                var deps = _.toArray(arguments);
-                // Check that this is a valid scope.
-                if($scope.$id) {
-                  $scope.$apply(function () {
-                    fn.apply($scope, deps);
-                  });
-                }
-              });
-            };
-          }]);
-      });*/
+      $rootScope.requireContext = appLevelRequire;
+      $rootScope.require = function (deps, fn) {
+        var $scope = this;
+        $scope.requireContext(deps, function () {
+          var deps = _.toArray(arguments);
+          // Check that this is a valid scope.
+          if($scope.$id) {
+            $scope.$apply(function () {
+              fn.apply($scope, deps);
+            });
+          }
+        });
+      };
+    }]);
   });
 
   return app;

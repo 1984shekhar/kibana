@@ -78,6 +78,8 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
     this.availablePanels = [];
 
     $rootScope.$on('$routeChangeSuccess',function(){
+      timer.cancel_all();
+
       // Clear the current dashboard to prevent reloading
       self.current = {};
       self.indices = [];

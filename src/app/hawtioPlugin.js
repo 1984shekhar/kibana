@@ -68,16 +68,17 @@ hawtioPluginLoader.registerPreBootstrapTask(function (nextTask) {
       });
 
     require(requiredModules, function () {
-      hawtioPluginLoader.addModule('kibana');
       hawtioPluginLoader.addModule('ngSanitize');
       hawtioPluginLoader.addModule('$strap.directives');
       hawtioPluginLoader.addModule('elasticjs.service');
+      hawtioPluginLoader.addModule('pasvaz.bindonce');
       hawtioPluginLoader.addModule('kibana.controllers');
       hawtioPluginLoader.addModule('kibana.services');
       hawtioPluginLoader.addModule('kibana.factories');
       hawtioPluginLoader.addModule('kibana.directives');
-
       hawtioPluginLoader.addModule('kibana.filters');
+
+      hawtioPluginLoader.addModule('kibana');
 
       $.each(panelTypes.split(' '),
         function (index, panelType) {

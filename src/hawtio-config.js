@@ -8,6 +8,8 @@ define(['settings'],
 function (Settings) {
   "use strict";
 
+  var restUrl = new Jolokia(Core.getJolokiaUrl()).execute("io.fabric8.insight:type=Elasticsearch","getRestUrl","insight");
+
   /** @scratch /configuration/config.js/2
    *
    * === Parameters
@@ -29,7 +31,7 @@ function (Settings) {
      *  +elasticsearch: {server: "http://localhost:9200", withCredentials: true}+
      *
      */
-    elasticsearch: "http://"+window.location.hostname+":9200",
+    elasticsearch: restUrl,
 
     /** @scratch /configuration/config.js/5
      *

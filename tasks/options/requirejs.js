@@ -56,7 +56,8 @@ module.exports = function(config,grunt) {
         'directives/all',
         'jquery.flot.pie',
         'angular-sanitize',
-        'angular-dragdrop'
+        'angular-dragdrop',
+        'hawtioPlugin'
       ]
     }
   ];

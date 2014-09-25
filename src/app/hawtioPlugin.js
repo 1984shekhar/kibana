@@ -12,43 +12,9 @@ var Kibana = (function (Kibana) {
   Kibana.log = Logger.get(Kibana.pluginName);
   Kibana.templatePath = "../hawtio-kibana/app/partials/";
 
-  // hmm, took out ngRoute
   angular.module(Kibana.pluginName, ['hawtioCore'])
-    .config(['$routeProvider', function ($routeProvider) {
-      $routeProvider
-        .when('/kibana', {
-          templateUrl: '/hawtio-kibana/app/partials/dashboard.html'
-        })
-        .when('/kibana/dashboard/:kbnType/:kbnId', {
-          templateUrl: '/hawtio-kibana/app/partials/dashboard.html'
-        })
-        .when('/kibana/dashboard/:kbnType/:kbnId/:params', {
-          templateUrl: '/hawtio-kibana/app/partials/dashboard.html'
-        });
-    }])
-    .run(function (workspace, viewRegistry) {
-
-      viewRegistry['kibana'] = Kibana.templatePath + 'hawtioLayout.html';
-
+    .run(function () {
       Kibana.log.info("plugin running");
-
-      // Add a top level tab to hawtio's navigation bar
-      workspace.topLevelTabs.push({
-        id: "kibana",
-        content: "Kibana",
-        title: "Kibana",
-        /*jshint unused:false*/
-        isValid: function (workspace) {
-          return true;
-        },
-        href: function () {
-          return "#/kibana";
-        },
-        isActive: function () {
-          return workspace.isLinkActive("kibana");
-        }
-      });
-
     });
 
   return Kibana;

@@ -10,14 +10,12 @@
     "url": "http://github.com/elasticsearch/kibana.git"
   },
   "devDependencies": {
-    "gifsicle": "~1.0.3",
     "rjs-build-analysis": "0.0.3",
     "grunt": "~0.4.0",
     "grunt-cli": "~0.1.13",
     "grunt-s3": "~0.2.0-alpha.2",
     "grunt-text-replace": "~0.3.12",
     "grunt-ngmin": "0.0.3",
-    "grunt-contrib": "~0.8.0",
     "grunt-contrib-less": "~0.7.0",
     "grunt-contrib-copy": "~0.4.1",
     "grunt-git-describe": "~2.3.2",

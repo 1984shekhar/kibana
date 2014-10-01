@@ -97,6 +97,10 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
     });
 
     var route = function() {
+      if (_.isUndefined($routeParams.kbnType)) {
+        $routeParams.kbnType = "insight";
+      }
+
       // Is there a dashboard type and id in the URL?
       if(!(_.isUndefined($routeParams.kbnType)) && !(_.isUndefined($routeParams.kbnId))) {
         var _type = $routeParams.kbnType;
@@ -123,6 +127,12 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
           break;
         case('local'):
           self.local_load();
+          break;
+        case('insight'):
+          if (!_id.match(/\.json$/)) {
+            _id += '.json';
+          }
+          self.insight_load(_id);
           break;
         default:
           $location.path(config.default_route);
@@ -358,6 +368,26 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
         return true;
       },function() {
         alertSrv.set('Error',"Could not load <i>dashboards/"+file+"</i>. Please make sure it exists" ,'error');
+        return false;
+      });
+    };
+
+    /* global Core */
+    this.insight_load = function(file) {
+      return $http({
+        url: Core.url(file.replace(/\.(?!json)/,"/")+'?' + new Date().getTime()),
+        method: "GET",
+        transformResponse: function(response) {
+          return renderTemplate(response,$routeParams);
+        }
+      }).then(function(result) {
+        if(!result) {
+          return false;
+        }
+        self.dash_load(dash_defaults(result.data));
+        return true;
+      },function() {
+        alertSrv.set('Error',"Could not load <i>"+file+"</i>. Please make sure it exists" ,'error');
         return false;
       });
     };

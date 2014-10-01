@@ -245,6 +245,7 @@
         <artifactId>maven-gpg-plugin</artifactId>
         <version>1.5</version>
         <configuration>
+          <passphrase>${gpg.passphrase}</passphrase>
           <useAgent>true</useAgent>
         </configuration>
       </plugin>

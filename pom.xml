@@ -15,8 +15,7 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -27,7 +26,7 @@
 
   <groupId>io.hawt.kibana</groupId>
   <artifactId>hawtio-kibana</artifactId>
-  <version>3.1.0-SNAPSHOT</version>
+  <version>3.1.0</version>
   <packaging>war</packaging>
   <description>hawtio :: kibana plugin</description>
 
@@ -42,7 +41,7 @@
     <plugin-context>/hawtio-kibana</plugin-context>
     <plugin-name>${project.artifactId}</plugin-name>
     <plugin-scripts>/vendor/require/require.js,/app/components/hawtio-require.config.js,/app/app.js</plugin-scripts>
-    <plugin-domain/>
+    <plugin-domain />
 
   </properties>
 
@@ -58,6 +57,7 @@
     <connection>scm:git:git@github.com:hawtio/kibana.git</connection>
     <developerConnection>scm:git:git@github.com:hawtio/kibana.git</developerConnection>
     <url>http://github.com/hawtio/kibana</url>
+    <tag>hawtio-kibana-3.1.0</tag>
   </scm>
 
   <dependencies>

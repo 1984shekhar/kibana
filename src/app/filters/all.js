@@ -136,7 +136,8 @@ define([
           if (angular.isDefined(line)) {
             link += "?line=" + line;
           }
-          formattedText = prefixSpaces + at + " <a href='" + link + "'>" + classAndMethod + "</a>(" + fileName + ":" + line + ")[" + mvnCoords + "]";
+          formattedText = prefixSpaces + at + " " + classAndMethod +
+                          "(<a href='" + link + "'>" + fileName + ":" + line + "</a>) [" + mvnCoords + "]";
         }
       }
 

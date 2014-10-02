@@ -8,6 +8,8 @@ define([
 
   var module = angular.module('kibana.filters');
 
+  var stackRegex = /^(\s*)(at)\s+([\w\.$_]+(\.([\w$_]+))*)\((.*)?:(\d+)\).*\[(.*)\]$/;
+
   module.filter('stringSort', function() {
     return function(input) {
       return input.sort();
@@ -107,6 +109,45 @@ define([
       return _.isArray(text)
         ? _.map(text, urlLink)
         : urlLink(text);
+    };
+  });
+
+  module.filter('stackTracify', function() {
+    var stackTracify = function(text) {
+      var formattedText = text;
+
+      var match = stackRegex.exec(formattedText);
+
+      if (match && match.length > 8) {
+        var prefixSpaces = match[1];
+        var at = match[2];
+        var classAndMethod = match[3];
+        var fileName = match[6];
+        var line = match[7];
+        var mvnCoords = match[8];
+        // we can ignore line if its not present...
+        if (classAndMethod && fileName && mvnCoords) {
+          var className = classAndMethod;
+          var idx = classAndMethod.lastIndexOf('.');
+          if (idx > 0) {
+            className = classAndMethod.substring(0, idx);
+          }
+          var link = "#/source/view/" + mvnCoords + "/class/" + className + "/" + fileName;
+          if (angular.isDefined(line)) {
+            link += "?line=" + line;
+          }
+          formattedText = prefixSpaces + at + " <a href='" + link + "'>" + classAndMethod + "</a>(" + fileName + ":" + line + ")[" + mvnCoords + "]";
+        }
+      }
+
+      return '<li>' + formattedText + '</li>';
+    };
+    return function(text) {
+      return '<ul class="stack-trace">' +
+        (_.isArray(text)
+          ? _.map(text, stackTracify).join('')
+          : stackTracify(text))
+        + '</ul>';
     };
   });
 

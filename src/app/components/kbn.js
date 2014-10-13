@@ -455,7 +455,9 @@ function($, _, moment) {
 
     // Reconstruct sorted obj based on keys
     for (i in sortedKeys) {
-      sortedObj[sortedKeys[i]] = arr[sortedKeys[i]];
+      if (typeof sortedKeys[i] !== 'function') {
+        sortedObj[sortedKeys[i]] = arr[sortedKeys[i]];
+      }
     }
     return sortedObj;
   };

@@ -26,7 +26,7 @@
 
   <groupId>io.hawt.kibana</groupId>
   <artifactId>hawtio-kibana</artifactId>
-  <version>3.1.0_2</version>
+  <version>3.1.0_3-SNAPSHOT</version>
   <packaging>war</packaging>
   <description>hawtio :: kibana plugin</description>
 
@@ -57,7 +57,7 @@
     <connection>scm:git:git@github.com:hawtio/kibana.git</connection>
     <developerConnection>scm:git:git@github.com:hawtio/kibana.git</developerConnection>
     <url>http://github.com/hawtio/kibana</url>
-    <tag>hawtio-kibana-3.1.0_2</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <dependencies>

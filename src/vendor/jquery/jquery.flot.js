@@ -2946,7 +2946,9 @@ Licensed under the MIT license.
                     highlight(item.series, item.datapoint, eventname);
             }
 
-            placeholder.trigger(eventname, [ pos, item ]);
+						if (placeholder) {
+            	placeholder.trigger(eventname, [ pos, item ]);
+						}
         }
 
         function triggerRedrawOverlay() {

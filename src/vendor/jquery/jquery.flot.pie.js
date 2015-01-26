@@ -530,7 +530,7 @@ More detail and specific examples can be found in the included HTML file.
 		// Placed here because it needs to be accessed from multiple locations
 
 		function drawDonutHole(layer) {
-			if (options.series.pie.innerRadius > 0) {
+			if (options && options.series.pie.innerRadius > 0) {
 
 				// subtract the center
 
@@ -655,7 +655,7 @@ More detail and specific examples can be found in the included HTML file.
 			var canvasY =  parseInt(e.pageY - offset.top);
 			var item = findNearbySlice(canvasX, canvasY);
 
-			if (options.grid.autoHighlight) {
+			if (options && options.grid.autoHighlight) {
 
 				// clear auto-highlights
 

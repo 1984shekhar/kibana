@@ -37,7 +37,7 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
   var module = angular.module('kibana.panels.histogram', []);
   app.useModule(module);
 
-  module.controller('histogram', function($scope, querySrv, dashboard, filterSrv) {
+  module.controller('histogram', function($scope, querySrv, dashboard, filterSrv, alertSrv) {
     $scope.panelMeta = {
       modals : [
         {
@@ -515,28 +515,34 @@ function (angular, app, $, _, kbn, moment, timeSeries, numeral) {
     // factor :: Zoom factor, so 0.5 = cuts timespan in half, 2 doubles timespan
     $scope.zoom = function(factor) {
       var _range = filterSrv.timeRange('last');
-      var _timespan = (_range.to.valueOf() - _range.from.valueOf());
-      var _center = _range.to.valueOf() - _timespan/2;
+      if (_range) {
+        var _timespan = (_range.to.valueOf() - _range.from.valueOf());
+        var _center = _range.to.valueOf() - _timespan / 2;
 
-      var _to = (_center + (_timespan*factor)/2);
-      var _from = (_center - (_timespan*factor)/2);
+        var _to = (_center + (_timespan * factor) / 2);
+        var _from = (_center - (_timespan * factor) / 2);
 
-      // If we're not already looking into the future, don't.
-      if(_to > Date.now() && _range.to < Date.now()) {
-        var _offset = _to - Date.now();
-        _from = _from - _offset;
-        _to = Date.now();
+        // If we're not already looking into the future, don't.
+        if (_to > Date.now() && _range.to < Date.now()) {
+          var _offset = _to - Date.now();
+          _from = _from - _offset;
+          _to = Date.now();
+        }
+
+        if (factor > 1) {
+          filterSrv.removeByType('time');
+        }
+        filterSrv.set({
+          type: 'time',
+          from: moment.utc(_from).toDate(),
+          to: moment.utc(_to).toDate(),
+          field: $scope.panel.time_field
+        });
+      } else {
+        alertSrv.set("No time filter",
+          'Timestamped indices are configured without a failover. Waiting for time filter.',
+          'info',5000);
       }
-
-      if(factor > 1) {
-        filterSrv.removeByType('time');
-      }
-      filterSrv.set({
-        type:'time',
-        from:moment.utc(_from).toDate(),
-        to:moment.utc(_to).toDate(),
-        field:$scope.panel.time_field
-      });
     };
 
     // I really don't like this function, too much dom manip. Break out into directive?

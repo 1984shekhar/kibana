@@ -314,7 +314,9 @@ function (angular, app, _, kbn, moment) {
         return;
       }
 
-      sort = [$scope.ejs.Sort($scope.panel.sort[0]).order($scope.panel.sort[1]).ignoreUnmapped(true)];
+      var field = _.contains($scope.fields.list,$scope.panel.sort[0]+'.raw') ?
+        $scope.panel.sort[0]+'.raw' : $scope.panel.sort[0];
+      sort = [$scope.ejs.Sort(field).order($scope.panel.sort[1]).ignoreUnmapped(true)];
       if($scope.panel.localTime) {
         sort.push($scope.ejs.Sort($scope.panel.timeField).order($scope.panel.sort[1]).ignoreUnmapped(true));
       }

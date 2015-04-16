@@ -1,3 +1,5 @@
+/* global Core */
+
 define([
   'angular',
   'jquery',
@@ -212,9 +214,29 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
       return _.cloneDeep(dashboard);
     };
 
+    this.startHawtioSessionHeartbeat = function() {
+      timer.cancel(self.hawtio_heartbeat_timer);
+      self.hawtio_heartbeat_timer = timer.register($timeout(function () {
+        self.startHawtioSessionHeartbeat();
+        $http({
+          url: Core.url('/index.html'),
+          method: "GET"
+        }).then(function(result) {
+          if(!result) {
+            return false;
+          }
+          return true;
+        },function() {
+          return false;
+        });
+      }, 10000));
+    };
+
     this.dash_load = function(dashboard) {
       // Cancel all timers
       timer.cancel_all();
+
+      self.startHawtioSessionHeartbeat();
 
       // Make sure the dashboard being loaded has everything required
       dashboard = dash_defaults(dashboard);
@@ -373,7 +395,6 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
       });
     };
 
-    /* global Core */
     this.insight_load = function(file) {
       return $http({
         url: Core.url(file.replace(/\.(?!json)/,"/")+'?' + new Date().getTime()),

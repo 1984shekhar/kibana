@@ -5,6 +5,7 @@
 /* global angular */
 /* global $ */
 /* global Core */
+/* global ejs */
 
 var Kibana = (function (Kibana) {
 
@@ -13,7 +14,22 @@ var Kibana = (function (Kibana) {
   Kibana.templatePath = "../hawtio-kibana/app/partials/";
 
   angular.module(Kibana.pluginName, ['hawtioCore'])
-    .run(function () {
+    .run(function ($http) {
+      var oldEjsRequest = ejs.Request;
+      ejs.Request = function() {
+        $http({
+          url: Core.url('/index.html'),
+          method: "OPTIONS"
+        }).then(function(result) {
+          if(!result) {
+            return false;
+          }
+          return true;
+        }, function() {
+          return false;
+        });
+        return oldEjsRequest();
+      };
       Kibana.log.info("plugin running");
     });
 

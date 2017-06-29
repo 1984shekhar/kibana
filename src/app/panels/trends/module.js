@@ -202,8 +202,10 @@ function (angular, app, _, kbn) {
           var queries = querySrv.getQueryObjs($scope.panel.queries.ids);
 
           _.each(queries, function(query) {
-            var n = results.facets[query.id].count;
-            var o = results.facets['old_'+query.id].count;
+            var n_facet = results.facets[query.id];
+            var n = _.isUndefined(n_facet) ? 0 : n_facet.count;
+            var o_facet = results.facets['old_'+query.id];
+            var o = _.isUndefined(o_facet) ? 0 : o_facet.count;
 
             var hits = {
               new : _.isUndefined($scope.data[i]) || _segment === 0 ? n : $scope.data[i].hits.new+n,

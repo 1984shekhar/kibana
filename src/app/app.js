@@ -72,7 +72,7 @@ function (angular, $, _, appLevelRequire) {
   app.config(function ($routeProvider, $controllerProvider, $httpProvider, $compileProvider, $filterProvider, $provide) {
 
 
-    $httpProvider.interceptors.push(['$location', function($location) {
+    $httpProvider.interceptors.push(['$q', '$location', function($q, $location) {
       return {
         responseError: function(resp) {
           if (resp.status === 0) {
@@ -80,6 +80,7 @@ function (angular, $, _, appLevelRequire) {
             $location.path('/connectionFailed');
             console.log(resp);
           }
+          return $q.reject(resp);
         }
       };
     }]);

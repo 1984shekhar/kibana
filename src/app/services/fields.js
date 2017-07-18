@@ -23,7 +23,7 @@ function (angular, _, config) {
     // we've already seen.
     //
     $rootScope.$watch(function(){return dashboard.indices;},function(n) {
-      if(!_.isUndefined(n) && n.length && dashboard.current.index.warm_fields) {
+      if(!_.isUndefined(n) && n.length && dashboard.current.index && dashboard.current.index.warm_fields) {
         // Only get the mapping for indices we don't know it for
         var indices = _.difference(n,_.keys(self.indices));
         // Only get the mapping if there are new indices

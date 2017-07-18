@@ -248,6 +248,13 @@
           <passphrase>${gpg.passphrase}</passphrase>
           <useAgent>true</useAgent>
         </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
 
     </plugins>
